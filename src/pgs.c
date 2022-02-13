@@ -99,6 +99,8 @@ ssize_t pgs_filter(struct pgs *pgs, enum filter filter) {
     case FILTER_GRAYSCALE:
         fn = filter_grayscale;
         break;
+    default:
+        __builtin_unreachable();
     };
 
     size_t pos = 0;
