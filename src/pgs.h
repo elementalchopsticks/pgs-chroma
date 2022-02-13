@@ -5,7 +5,9 @@
 #include <sys/types.h>
 
 enum filter {
-    GRAYSCALE,
+    FILTER_BW,
+    FILTER_CLIPPED,
+    FILTER_GRAYSCALE,
 };
 
 struct pgs {

@@ -34,8 +34,8 @@ int main(int argc, char **argv) {
     if (flags.h) {
         printf("Usage: pgs-chroma [options...] <input> <output>\n\n"
                "Options:\n"
-               "    -f   Specify filter to be used. Default: 'grayscale'.\n"
-               "             Options: 'grayscale'.\n"
+               "    -f   Specify filter to be used. Default: 'clipped'.\n"
+               "             Options: 'bw', 'clipped', 'grayscale'.\n"
                "    -h   Show help message and exit.\n"
                "    -v   Print version information and exit.\n");
         return 0;
@@ -46,10 +46,14 @@ int main(int argc, char **argv) {
 
     enum filter filter;
     if (!flags.f) {
-        filter = GRAYSCALE;
+        filter = FILTER_CLIPPED;
     } else {
-        if (strcmp(flags.f, "grayscale") == 0) {
-            filter = GRAYSCALE;
+        if (strcmp(flags.f, "bw") == 0) {
+            filter = FILTER_BW;
+        } else if (strcmp(flags.f, "clipped") == 0) {
+            filter = FILTER_CLIPPED;
+        } else if (strcmp(flags.f, "grayscale") == 0) {
+            filter = FILTER_GRAYSCALE;
         } else {
             fprintf(stderr, "Invalid filter: '%s'\n", flags.f);
             return 1;

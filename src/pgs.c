@@ -55,7 +55,33 @@ ssize_t pgs_open(struct pgs *pgs, const char *path) {
 
 void pgs_close(struct pgs *pgs) { free(pgs->data); }
 
-static struct pixel grayscale_filter(struct pixel p) {
+static struct pixel filter_bw(struct pixel p) {
+    if (p.y > 127) {
+        p.y = 255;
+    } else {
+        p.y = 0;
+    }
+
+    p.cr = 128;
+    p.cb = 128;
+
+    return p;
+}
+
+static struct pixel filter_clipped(struct pixel p) {
+    if (p.y > 191) {
+        p.y = 255;
+    } else if (p.y < 63) {
+        p.y = 0;
+    }
+
+    p.cr = 128;
+    p.cb = 128;
+
+    return p;
+}
+
+static struct pixel filter_grayscale(struct pixel p) {
     p.cr = 128;
     p.cb = 128;
     return p;
@@ -64,8 +90,14 @@ static struct pixel grayscale_filter(struct pixel p) {
 ssize_t pgs_filter(struct pgs *pgs, enum filter filter) {
     struct pixel (*fn)(struct pixel);
     switch (filter) {
-    case GRAYSCALE:
-        fn = grayscale_filter;
+    case FILTER_BW:
+        fn = filter_bw;
+        break;
+    case FILTER_CLIPPED:
+        fn = filter_clipped;
+        break;
+    case FILTER_GRAYSCALE:
+        fn = filter_grayscale;
         break;
     };
 
