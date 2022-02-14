@@ -28,3 +28,5 @@ executable(
   src,
   install: true
 )
+
+install_man('pgs-chroma.1')
